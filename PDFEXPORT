@@ -1,0 +1,60 @@
+/** User password. */
+public static byte[] USER = "Hello".getBytes();
+/** Owner password. */
+public static byte[] OWNER = "World".getBytes();
+
+...
+
+public void encryptPdf(String src, String dest) throws IOException, DocumentException {
+    PdfReader reader = new PdfReader(src);
+    PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+    stamper.setEncryption(USER, OWNER,
+        PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+    stamper.close();
+    reader.close();
+}
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class Secure_file
+{
+
+private static String USER_PASSWORD = "password";
+private static String OWNER_PASSWORD = "secured";
+public static void main(String[] args) throws IOException {
+
+    Document document = new Document();
+      try
+      {
+
+         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("E:\\sample.pdf"));
+         writer.setEncryption(USER_PASSWORD.getBytes(),OWNER_PASSWORD.getBytes(), PdfWriter.ALLOW_PRINTING,PdfWriter.ENCRYPTION_AES_128);
+         document.open();
+
+         document.add(new Paragraph("This is Password Protected PDF document."));
+         document.close();
+         writer.close();
+      } catch (DocumentException e)
+      {
+         e.printStackTrace();
+      } catch (FileNotFoundException e)
+      {
+         e.printStackTrace();
+      }
+}
+
+
+itextpdf-5.2.1.jar
+
+bcmail-jdk16-1.46.jar
+
+bcprov-jdk16-1.46.jar
+
+bctsp-jdk16-1.46.jar
+}
